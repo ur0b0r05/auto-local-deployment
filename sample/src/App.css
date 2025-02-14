@@ -1,0 +1,105 @@
+/* Importar fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400&display=swap');
+
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0a0f1c;
+}
+
+/* Contenedor principal */
+.main-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Contenedor del texto neón */
+.neon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+}
+
+/* Efecto de resplandor */
+.glow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle at center,
+    rgba(103, 232, 249, 0.08) 0%,
+    rgba(110, 231, 183, 0.08) 25%,
+    rgba(10, 15, 28, 0) 60%
+  );
+  pointer-events: none;
+  filter: blur(60px);
+  z-index: 1;
+}
+
+/* Estilos del texto */
+.neon-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8rem;
+  font-weight: 200;
+  letter-spacing: -0.03em;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.hello-text {
+  font-weight: 100;
+  color: rgba(255, 255, 255, 0.98);
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.world-text {
+  font-weight: 200;
+  margin-left: 0.2em;
+  background: linear-gradient(to right, 
+    #67e8f9,  /* Cyan start */
+    #6ee7b7   /* Emerald end */
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 
+    0 0 10px rgba(103, 232, 249, 0.5),
+    0 0 20px rgba(110, 231, 183, 0.3),
+    0 0 30px rgba(103, 232, 249, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .neon-text {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .neon-text {
+    font-size: 6rem;
+  }
+}

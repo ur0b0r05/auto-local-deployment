@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+TARGET="/home/deploy/app"
+GIT_DIR="/home/deploy/app.git"
+BRANCH="main"
+APP_DIR="$TARGET/sample"
+
+while read oldrev newrev ref; do
+    if [[ $ref = refs/heads/$BRANCH ]]; then
+        echo "Main branch received. Deploying..."
+
+        # Checkout the latest version into the target directory
+        git --work-tree="$TARGET" --git-dir="$GIT_DIR" checkout -f "$BRANCH"
+
+        # Copy .env file from the repository root to the sample folder (if it exists)
+        if [ -f "$TARGET/.env" ]; then
+            echo "Copying .env file to sample folder..."
+            cp "$TARGET/.env" "$APP_DIR/.env"
+        else
+            echo "Warning: .env file not found at $TARGET/.env"
+        fi
+
+        # Change directory to the React app folder
+        cd "$APP_DIR"
+
+        echo "Installing dependencies..."
+        sudo npm install
+
+        echo "Building application..."
+        sudo npm run build
+
+        # Stop any existing server
+        if [ -f /tmp/app.pid ]; then
+            kill $(cat /tmp/app.pid) || true
+            rm /tmp/app.pid
+        fi
+
+        echo "Starting application using http-server..."
+        # Change into the build output folder and start http-server with logging
+        cd "$APP_DIR/dist"
+        # Remove any existing log file
+        rm -f /tmp/http-server.log
+        npx http-server . -p 3000 > /tmp/http-server.log 2>&1 & echo $! > /tmp/app.pid
+
+        echo "Deployment completed!"
+    else
+        echo "Ref $ref received. Doing nothing: only deploying main branch."
+    fi
+done
